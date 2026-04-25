@@ -2,6 +2,7 @@ import { LogOut, RefreshCw, Tv2, AlertCircle } from 'lucide-react'
 import type { ChannelInfo } from '../types'
 import type { FetchPhase, FetchError, FetchProgress } from '../hooks/useChannelFetcher'
 import { SubscriptionTable } from './SubscriptionTable'
+import { AdSlot } from './AdSlot'
 
 interface Props {
   channels: ChannelInfo[]
@@ -82,7 +83,8 @@ export function Dashboard({
 
       {/* Dashboard */}
       {!isLoading && fetchPhase !== 'error' && (
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
+        <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-6 space-y-4">
+          <AdSlot variant="banner" />
           <SubscriptionTable
             channels={channels}
             setChannels={setChannels}

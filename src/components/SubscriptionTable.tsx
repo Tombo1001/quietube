@@ -3,6 +3,7 @@ import { ChevronUp, ChevronDown, ExternalLink, Trash2, Search, X, Undo2 } from '
 import type { ChannelInfo, SortColumn, SortDirection, PendingDelete, ToastMessage } from '../types'
 import { deleteSubscription } from '../lib/youtube'
 import { saveCache } from '../lib/cache'
+import { AdSlot } from './AdSlot'
 import { cn, formatDate, formatInactive, inactivityColor } from '../lib/utils'
 
 interface Props {
@@ -205,14 +206,28 @@ export function SubscriptionTable({ channels, setChannels, token }: Props) {
                 </td>
               </tr>
             ) : (
-              visible.map((channel) => (
-                <ChannelRow
-                  key={channel.subscriptionId}
-                  channel={channel}
-                  onUnsubscribe={handleUnsubscribe}
-                  disabled={!token}
-                />
-              ))
+              visible.reduce<React.ReactNode[]>((rows, channel, i) => {
+                rows.push(
+                  <ChannelRow
+                    key={channel.subscriptionId}
+                    channel={channel}
+                    onUnsubscribe={handleUnsubscribe}
+                    disabled={!token}
+                  />,
+                )
+                // Insert an in-feed ad after every 10th row, max 3 total
+                const adNumber = Math.floor((i + 1) / 10)
+                if ((i + 1) % 10 === 0 && adNumber <= 3) {
+                  rows.push(
+                    <tr key={`ad-${i}`} className="border-t border-slate-800/60">
+                      <td colSpan={5} className="px-3 py-2">
+                        <AdSlot variant="feed" />
+                      </td>
+                    </tr>,
+                  )
+                }
+                return rows
+              }, [])
             )}
           </tbody>
         </table>
