@@ -75,10 +75,17 @@ export function SubscriptionTable({ channels, setChannels, token }: Props) {
       }, 5000)
 
       setPendingDeletes((prev) => new Map(prev).set(subscriptionId, { channel, timeoutId }))
-      setToasts((prev) => [
-        ...prev,
-        { id: crypto.randomUUID(), channelTitle: channel.title, subscriptionId },
-      ])
+
+      // Add toast, enforce max 3 (FIFO — drop oldest if over limit)
+      setToasts((prev) => {
+        const next = [...prev, { id: crypto.randomUUID(), channelTitle: channel.title, subscriptionId }]
+        return next.length > 3 ? next.slice(next.length - 3) : next
+      })
+
+      // Auto-dismiss this toast after 5s regardless of API call timing
+      setTimeout(() => {
+        setToasts((prev) => prev.filter((t) => t.subscriptionId !== subscriptionId))
+      }, 5000)
     },
     [token, setChannels],
   )
@@ -310,7 +317,7 @@ function ChannelRow({
       {/* Last upload */}
       <td className="px-3 py-2.5 text-slate-400">
         {status === 'loading' && <span className="text-slate-600 animate-pulse">Loading…</span>}
-        {status === 'no-uploads' && <span className="text-slate-600 italic">No uploads</span>}
+        {status === 'no-uploads' && <span className="text-slate-600 italic">Zero uploads</span>}
         {status === 'unavailable' && <span className="text-slate-600 italic">Unavailable</span>}
         {status === 'error' && <span className="text-red-800 italic">Error</span>}
         {status === 'loaded' && lastUploadDate && formatDate(lastUploadDate)}

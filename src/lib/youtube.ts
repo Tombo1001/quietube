@@ -117,7 +117,22 @@ export async function fetchLastUploadDate(
     maxResults: '1',
   })
 
-  const data = await ytFetch<PlaylistItemsListResponse>(`${YT}/playlistItems?${params}`, token)
+  const res = await fetch(`${YT}/playlistItems?${params}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+
+  if (res.status === 401) throw new AuthError('Session expired')
+  if (res.status === 403) {
+    let body: { error?: { errors?: { reason?: string }[] } } = {}
+    try { body = await res.json() } catch { /* ignore */ }
+    if (body.error?.errors?.[0]?.reason === 'quotaExceeded') {
+      throw new QuotaError('Quota exhausted')
+    }
+    return null  // forbidden but not quota — treat as zero uploads
+  }
+  if (!res.ok) return null  // 404 empty playlist — treat as zero uploads
+
+  const data = await res.json() as PlaylistItemsListResponse
   return data.items?.[0]?.snippet.publishedAt ?? null
 }
 
