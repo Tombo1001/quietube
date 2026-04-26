@@ -1,4 +1,4 @@
-import type { Subscription } from '../types'
+import type { Subscription, UserProfile } from '../types'
 
 const YT = 'https://www.googleapis.com/youtube/v3'
 
@@ -134,6 +134,15 @@ export async function fetchLastUploadDate(
 
   const data = await res.json() as PlaylistItemsListResponse
   return data.items?.[0]?.snippet.publishedAt ?? null
+}
+
+export async function fetchUserProfile(token: string): Promise<UserProfile> {
+  const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  if (res.status === 401) throw new AuthError('Session expired')
+  if (!res.ok) throw new Error(`Profile fetch failed: ${res.status}`)
+  return res.json() as Promise<UserProfile>
 }
 
 export async function deleteSubscription(token: string, subscriptionId: string): Promise<void> {

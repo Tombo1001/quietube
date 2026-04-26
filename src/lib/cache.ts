@@ -8,7 +8,7 @@ interface Entry {
   savedAt: number
 }
 
-export function loadCache(): { channels: ChannelInfo[]; ageMs: number } | null {
+export function loadCache(): { channels: ChannelInfo[]; savedAt: number } | null {
   try {
     const raw = localStorage.getItem(KEY)
     if (!raw) return null
@@ -18,7 +18,7 @@ export function loadCache(): { channels: ChannelInfo[]; ageMs: number } | null {
       localStorage.removeItem(KEY)
       return null
     }
-    return { channels: entry.channels, ageMs }
+    return { channels: entry.channels, savedAt: entry.savedAt }
   } catch {
     return null
   }

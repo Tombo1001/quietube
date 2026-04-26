@@ -30,3 +30,9 @@ export interface ToastMessage {
   channelTitle: string
   subscriptionId: string
 }
+
+export interface UserProfile {
+  name: string
+  picture: string
+  email: string
+}

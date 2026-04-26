@@ -97,6 +97,13 @@ export function useChannelFetcher() {
     }
   }, [])
 
+  const reportError = useCallback((err: unknown) => {
+    if (err instanceof AuthError) setFetchError('auth')
+    else if (err instanceof QuotaError) setFetchError('quota')
+    else setFetchError('unknown')
+    setPhase('error')
+  }, [])
+
   const abort = useCallback(() => {
     abortRef.current = true
     setPhase('idle')
@@ -115,6 +122,7 @@ export function useChannelFetcher() {
     progress,
     fetchError,
     fetchChannels,
+    reportError,
     abort,
     loadFromCache,
   }

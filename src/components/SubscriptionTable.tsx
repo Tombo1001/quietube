@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { ChevronUp, ChevronDown, ExternalLink, Trash2, Search, X, Undo2 } from 'lucide-react'
+import { ChevronUp, ChevronDown, ExternalLink, Trash2, Search, X, Undo2, AlertCircle } from 'lucide-react'
 import type { ChannelInfo, SortColumn, SortDirection, PendingDelete, ToastMessage } from '../types'
-import { deleteSubscription } from '../lib/youtube'
+import { deleteSubscription, QuotaError, AuthError } from '../lib/youtube'
 import { saveCache } from '../lib/cache'
 import { AdSlot } from './AdSlot'
 import { cn, formatDate, formatInactive, inactivityColor } from '../lib/utils'
@@ -28,6 +28,7 @@ export function SubscriptionTable({ channels, setChannels, token }: Props) {
   const [search, setSearch] = useState('')
   const [pendingDeletes, setPendingDeletes] = useState<Map<string, PendingDelete>>(new Map())
   const [toasts, setToasts] = useState<ToastMessage[]>([])
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const channelsRef = useRef(channels)
   channelsRef.current = channels
 
@@ -58,13 +59,17 @@ export function SubscriptionTable({ channels, setChannels, token }: Props) {
         try {
           await deleteSubscription(token, subscriptionId)
           saveCache(channelsRef.current)
-        } catch {
-          // Restore the channel if delete failed
+        } catch (err) {
           setChannels((prev) => {
             const next = [...prev, channel]
             saveCache(next)
             return next
           })
+          const msg = err instanceof QuotaError || err instanceof AuthError
+            ? "Service requests can't be completed right now — try again later."
+            : 'Could not unsubscribe — please try again.'
+          setErrorMsg(msg)
+          setTimeout(() => setErrorMsg(null), 6000)
         } finally {
           setPendingDeletes((prev) => {
             const next = new Map(prev)
@@ -234,8 +239,14 @@ export function SubscriptionTable({ channels, setChannels, token }: Props) {
       </div>
 
       {/* Toast stack */}
-      {toasts.length > 0 && (
+      {(toasts.length > 0 || errorMsg) && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex flex-col gap-2 z-50">
+          {errorMsg && (
+            <div className="flex items-center gap-3 bg-slate-800 border border-red-800/60 rounded-xl shadow-xl px-4 py-3 text-sm text-slate-200 min-w-72">
+              <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+              <span className="flex-1">{errorMsg}</span>
+            </div>
+          )}
           {toasts.map((toast) => (
             <div
               key={toast.id}

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { initAuth, requestToken, revokeToken } from './lib/auth'
-import { fetchAllSubscriptions } from './lib/youtube'
+import { fetchAllSubscriptions, fetchUserProfile, QuotaError, AuthError } from './lib/youtube'
 import { loadCache, clearCache } from './lib/cache'
-import type { Subscription } from './types'
+import type { Subscription, UserProfile } from './types'
 import { useChannelFetcher } from './hooks/useChannelFetcher'
 import { LandingPage } from './components/LandingPage'
 import { Dashboard } from './components/Dashboard'
@@ -16,6 +16,8 @@ export function App() {
   const [authError, setAuthError] = useState<string | null>(null)
   const [gsiReady, setGsiReady] = useState(false)
   const [subCount, setSubCount] = useState(0)
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
+  const [dataTimestamp, setDataTimestamp] = useState<number | null>(null)
   const tokenRef = useRef<string | null>(null)
 
   const {
@@ -25,6 +27,7 @@ export function App() {
     progress,
     fetchError,
     fetchChannels,
+    reportError,
     abort,
     loadFromCache,
   } = useChannelFetcher()
@@ -52,10 +55,13 @@ export function App() {
       tokenRef.current = token
       setAuthError(null)
 
+      fetchUserProfile(token).then(setUserProfile).catch(() => {/* non-fatal */})
+
       const cached = loadCache()
       if (cached) {
         loadFromCache(cached.channels)
         setSubCount(cached.channels.length)
+        setDataTimestamp(cached.savedAt)
         setAppPhase('dashboard')
         return
       }
@@ -68,14 +74,20 @@ export function App() {
           allSubs.push(...page)
           setSubCount(allSubs.length)
         })
-      } catch {
-        setAuthError('Failed to load subscriptions — please sign in again.')
-        setAppPhase('landing')
+      } catch (err) {
+        if (err instanceof QuotaError || err instanceof AuthError) {
+          reportError(err)
+          setAppPhase('dashboard')
+        } else {
+          setAuthError('Failed to load subscriptions — please sign in again.')
+          setAppPhase('landing')
+        }
         return
       }
 
       setAppPhase('loading-channels')
       await fetchChannels(allSubs, token)
+      setDataTimestamp(Date.now())
       setAppPhase('dashboard')
     },
     [fetchChannels, loadFromCache],
@@ -111,6 +123,8 @@ export function App() {
     clearCache()
     setChannels([])
     setSubCount(0)
+    setUserProfile(null)
+    setDataTimestamp(null)
     setAppPhase('landing')
   }, [abort, setChannels])
 
@@ -137,6 +151,8 @@ export function App() {
       subCount={subCount}
       progress={progress}
       token={tokenRef.current}
+      userProfile={userProfile}
+      dataTimestamp={dataTimestamp}
       onSignOut={handleSignOut}
       onRefresh={handleRefresh}
     />

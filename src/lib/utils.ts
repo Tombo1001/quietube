@@ -25,6 +25,14 @@ export function formatInactive(days: number): string {
   return months > 0 ? `${years}y ${months}mo` : `${years}y`
 }
 
+export function formatRefreshAge(timestamp: number): string {
+  const minutes = Math.floor((Date.now() - timestamp) / 60_000)
+  if (minutes < 2) return 'just now'
+  if (minutes < 60) return `${minutes}m ago`
+  const hours = Math.floor(minutes / 60)
+  return hours === 1 ? '1 hour ago' : `${hours} hours ago`
+}
+
 export function inactivityColor(days: number | null): string {
   if (days === null) return 'text-slate-500'
   if (days < 180) return 'text-slate-300'

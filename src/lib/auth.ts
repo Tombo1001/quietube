@@ -43,6 +43,7 @@ export function initAuth(
     scope: [
       'https://www.googleapis.com/auth/youtube.readonly',
       'https://www.googleapis.com/auth/youtube',
+      'profile',
     ].join(' '),
     callback: (response) => {
       if (response.error) {
