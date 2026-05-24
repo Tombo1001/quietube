@@ -135,8 +135,8 @@ function UserSummary({
   const darkPct = (dark / n) * 100
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 flex items-center gap-5">
-      {/* Profile */}
+    <div className="bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
+      {/* Profile — on mobile also carries the BMaC button on the right */}
       <div className="flex items-center gap-3 shrink-0">
         {userProfile?.picture ? (
           <img
@@ -167,9 +167,22 @@ function UserSummary({
             </div>
           )}
         </div>
+        {/* BMaC — mobile only, pushed to far right of the profile row */}
+        <a
+          href="https://www.buymeacoffee.com/exit"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-auto sm:hidden shrink-0"
+        >
+          <img
+            src="https://img.buymeacoffee.com/button-api/?text=Buy+me+a+coffee&emoji=%E2%98%95&slug=exit&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff"
+            alt="Buy me a coffee"
+            style={{ height: '32px', borderRadius: '8px' }}
+          />
+        </a>
       </div>
 
-      <div className="w-px self-stretch bg-slate-800 shrink-0" />
+      <div className="hidden sm:block w-px self-stretch bg-slate-800 shrink-0" />
 
       {/* RAG breakdown */}
       <div className="flex-1 min-w-0 space-y-1.5">
@@ -212,10 +225,10 @@ function UserSummary({
         </div>
       </div>
 
-      <div className="w-px self-stretch bg-slate-800 shrink-0" />
+      <div className="hidden sm:block w-px self-stretch bg-slate-800 shrink-0" />
 
-      {/* Buy Me a Coffee */}
-      <div className="shrink-0 flex items-center">
+      {/* Buy Me a Coffee — desktop only (mobile version is inside the profile row above) */}
+      <div className="hidden sm:flex shrink-0 items-center">
         <a
           href="https://www.buymeacoffee.com/exit"
           target="_blank"

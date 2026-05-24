@@ -196,8 +196,8 @@ export function SubscriptionTable({ channels, setChannels, token }: Props) {
             <tr>
               <th className="w-12 px-3 py-3" />
               <SortHeader col="title" label="Channel" sort={sort} onSort={handleSort} />
-              <SortHeader col="lastUpload" label="Last Upload" sort={sort} onSort={handleSort} />
-              <SortHeader col="daysInactive" label="Inactive For" sort={sort} onSort={handleSort} />
+              <SortHeader col="lastUpload" label="Last Upload" sort={sort} onSort={handleSort} className="hidden sm:table-cell" />
+              <SortHeader col="daysInactive" label="Inactive For" sort={sort} onSort={handleSort} className="hidden sm:table-cell" />
               <th className="px-3 py-3 text-right text-slate-500 font-medium">Action</th>
             </tr>
           </thead>
@@ -276,17 +276,19 @@ function SortHeader({
   label,
   sort,
   onSort,
+  className,
 }: {
   col: SortColumn
   label: string
   sort: { col: SortColumn; dir: SortDirection }
   onSort: (col: SortColumn) => void
+  className?: string
 }) {
   const active = sort.col === col
   return (
     <th
       onClick={() => onSort(col)}
-      className="px-3 py-3 text-left text-slate-500 font-medium cursor-pointer hover:text-slate-300 select-none"
+      className={cn("px-3 py-3 text-left text-slate-500 font-medium cursor-pointer hover:text-slate-300 select-none", className)}
     >
       <div className="flex items-center gap-1">
         {label}
@@ -327,7 +329,7 @@ function ChannelRow({
         />
       </td>
 
-      {/* Channel name */}
+      {/* Channel name — mobile shows last post date as a sub-line */}
       <td className="px-3 py-2.5 max-w-xs">
         <a
           href={`https://www.youtube.com/channel/${channelId}`}
@@ -338,10 +340,25 @@ function ChannelRow({
           <span className="truncate">{title}</span>
           <ExternalLink className="w-3 h-3 text-slate-600 group-hover:text-slate-400 shrink-0" />
         </a>
+        <div className="sm:hidden mt-0.5 text-xs">
+          {status === 'loading' && <span className="text-slate-600 animate-pulse">Loading…</span>}
+          {status === 'no-uploads' && <span className="text-slate-600 italic">No uploads</span>}
+          {status === 'unavailable' && <span className="text-slate-600 italic">Unavailable</span>}
+          {status === 'error' && <span className="text-red-800 italic">Error</span>}
+          {status === 'loaded' && lastUploadDate && (
+            <span className={cn('tabular-nums', inactivityColor(daysInactive ?? 0))}>
+              {formatDate(lastUploadDate)}
+              {daysInactive !== null && <span className="text-slate-600"> · {formatInactive(daysInactive)}</span>}
+            </span>
+          )}
+          {status === 'loaded' && !lastUploadDate && daysInactive === null && (
+            <span className="text-slate-700">—</span>
+          )}
+        </div>
       </td>
 
-      {/* Last upload */}
-      <td className="px-3 py-2.5 text-slate-400">
+      {/* Last upload — desktop only */}
+      <td className="hidden sm:table-cell px-3 py-2.5 text-slate-400">
         {status === 'loading' && <span className="text-slate-600 animate-pulse">Loading…</span>}
         {status === 'no-uploads' && <span className="text-slate-600 italic">Zero uploads</span>}
         {status === 'unavailable' && <span className="text-slate-600 italic">Unavailable</span>}
@@ -349,8 +366,8 @@ function ChannelRow({
         {status === 'loaded' && lastUploadDate && formatDate(lastUploadDate)}
       </td>
 
-      {/* Days inactive */}
-      <td className="px-3 py-2.5">
+      {/* Days inactive — desktop only */}
+      <td className="hidden sm:table-cell px-3 py-2.5">
         {status === 'loaded' && daysInactive !== null ? (
           <span className={cn('font-medium tabular-nums', inactivityColor(daysInactive))}>
             {formatInactive(daysInactive)}
