@@ -136,6 +136,26 @@ export function LandingPage({ onSignIn, gsiReady, error }: Props) {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="max-w-5xl mx-auto px-6 pb-10 text-center text-xs text-slate-600 space-x-4">
+        <a href="/quietube/privacy.html" className="hover:text-slate-300 transition-colors">Privacy Policy</a>
+        <a href="/quietube/terms.html" className="hover:text-slate-300 transition-colors">Terms of Service</a>
+        <a
+          href="https://github.com/Tombo1001/quietube"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-slate-300 transition-colors"
+        >
+          Source
+        </a>
+        <span className="block mt-2 text-slate-700">
+          QuieTube uses YouTube API Services. By signing in you agree to the{' '}
+          <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-slate-300">YouTube Terms of Service</a>
+          {' '}and the{' '}
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-slate-300">Google Privacy Policy</a>.
+        </span>
+      </footer>
     </div>
   )
 }
