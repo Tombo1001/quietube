@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="QuieTube privacy policy — how QuieTube uses YouTube API Services and handles your data." />
+  <link rel="icon" type="image/svg+xml" href="/quietube/favicon.svg" />
+  <link rel="stylesheet" href="/quietube/legal.css" />
+  <title>Privacy Policy — QuieTube</title>
+</head>
+<body>
+<main>
+  <div class="brand"><a href="/quietube/">← Back to QuieTube</a></div>
+
+  <h1>Privacy Policy</h1>
+  <p class="meta">Last updated: 20 October 2026</p>
+
+  <p>
+    QuieTube (<a href="https://tombo1001.github.io/quietube/">https://tombo1001.github.io/quietube/</a>) is a free,
+    browser-based tool operated by Tom Cocking, United Kingdom ("we", "us"). It lets you sign in with your Google
+    account, see your YouTube subscriptions sorted by each channel's most recent upload, and unsubscribe from channels
+    you no longer want to follow. This policy explains what data QuieTube accesses, how it is used, and how you can
+    control it.
+  </p>
+
+  <h2>1. QuieTube uses YouTube API Services</h2>
+  <p>
+    QuieTube uses <strong>YouTube API Services</strong> to read your subscriptions and channel upload information and,
+    when you ask it to, to remove a subscription. By using QuieTube you agree to be bound by the
+    <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a>. Google's handling of your data is described
+    in the <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.
+  </p>
+
+  <h2>2. What data QuieTube accesses</h2>
+  <p>When you sign in with Google, QuieTube requests the following permissions (OAuth scopes):</p>
+  <ul>
+    <li>
+      <code>https://www.googleapis.com/auth/youtube</code> — to list the channels you are subscribed to, to look up each
+      channel's uploads playlist and most recent upload date, and to delete a subscription when you click
+      "Unsubscribe". QuieTube never creates, uploads, rates, comments on, or otherwise modifies any YouTube content.
+    </li>
+    <li>
+      <code>profile</code> — your name and profile picture, shown only so you can confirm which account is signed in.
+    </li>
+  </ul>
+  <p>Through those permissions QuieTube processes the following <strong>Authorized Data</strong>:</p>
+  <ul>
+    <li>Your subscription list: subscription IDs, channel IDs, channel titles and thumbnail URLs.</li>
+    <li>For each subscribed channel, the ID of its uploads playlist and the publish date of its most recent video.</li>
+    <li>Your Google account display name and profile picture URL.</li>
+  </ul>
+
+  <h2>3. How data is used</h2>
+  <p>
+    Authorized Data is used solely to display your subscriptions sorted by activity and to carry out unsubscribe actions
+    you explicitly request. It is <strong>not</strong> used for advertising, profiling, analytics, or any purpose other
+    than providing the QuieTube feature you are using.
+  </p>
+
+  <h2>4. Where data is stored, and for how long</h2>
+  <p>
+    QuieTube has <strong>no backend server and no database</strong>. All API calls are made directly from your browser
+    to Google's servers. Specifically:
+  </p>
+  <ul>
+    <li>
+      Your Google access token is held only in your browser's memory while the page is open. It is never written to disk
+      and is discarded when you close the tab or sign out.
+    </li>
+    <li>
+      To save API quota on repeat visits, the processed subscription list (channel names, thumbnails and last-upload
+      dates) is cached in your browser's <code>localStorage</code> for a maximum of <strong>24 hours</strong>, after
+      which it is automatically deleted. The cache is also deleted immediately when you click "Sign out" or
+      "Refresh".
+    </li>
+    <li>We never transmit, copy, or store any Authorized Data on servers we control, and we never share it with third parties.</li>
+  </ul>
+
+  <h2>5. Cookies, analytics and advertising</h2>
+  <p>
+    QuieTube uses <strong>Google Analytics</strong> to measure aggregate, anonymous page usage (for example, how many
+    people visit the site) and displays advertisements served by <strong>Google AdSense</strong> to help cover running
+    costs. These Google services may set cookies or use similar technologies in your browser; see
+    <a href="https://policies.google.com/technologies/partner-sites">How Google uses information from sites or apps
+    that use its services</a> and <a href="https://policies.google.com/technologies/ads">Google's advertising
+    policies</a>. You can opt out of personalised advertising at
+    <a href="https://adssettings.google.com/">Google Ads Settings</a>.
+  </p>
+  <p>
+    <strong>No YouTube Authorized Data is ever passed to Analytics or AdSense</strong>, and ads are not targeted using
+    any information obtained through YouTube API Services.
+  </p>
+
+  <h2>6. Revoking QuieTube's access</h2>
+  <p>You can withdraw QuieTube's access to your Google account at any time:</p>
+  <ul>
+    <li>Click <strong>Sign out</strong> in QuieTube — this revokes the current access token and clears the local cache; or</li>
+    <li>
+      Remove QuieTube from your Google Account's connected apps at
+      <a href="https://security.google.com/settings/security/permissions">https://security.google.com/settings/security/permissions</a>.
+    </li>
+  </ul>
+  <p>
+    To clear any remaining cached data, clear your browser's site data for <code>tombo1001.github.io</code>.
+  </p>
+
+  <h2>7. Children</h2>
+  <p>QuieTube is not directed at children under 13 and we do not knowingly collect data from them.</p>
+
+  <h2>8. Changes to this policy</h2>
+  <p>
+    If this policy changes, the updated version will be published at this address with a new "last updated" date.
+  </p>
+
+  <h2>9. Contact</h2>
+  <p>
+    Questions about this policy or your data can be sent to
+    <a href="mailto:tom.cocking@gmail.com">tom.cocking@gmail.com</a>.
+  </p>
+
+  <footer>
+    <a href="/quietube/">QuieTube</a>
+    <a href="/quietube/terms.html">Terms of Service</a>
+    <a href="https://github.com/Tombo1001/quietube">Source code</a>
+  </footer>
+</main>
+</body>
+</html>
