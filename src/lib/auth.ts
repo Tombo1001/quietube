@@ -40,8 +40,9 @@ export function initAuth(
 ) {
   tokenClient = window.google.accounts.oauth2.initTokenClient({
     client_id: clientId,
+    // youtube (read + manage subscriptions) is a superset of youtube.readonly,
+    // so only one sensitive scope is requested — simpler for users and for verification.
     scope: [
-      'https://www.googleapis.com/auth/youtube.readonly',
       'https://www.googleapis.com/auth/youtube',
       'profile',
     ].join(' '),
