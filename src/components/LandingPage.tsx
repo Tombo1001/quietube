@@ -83,7 +83,7 @@ export function LandingPage({ onSignIn, gsiReady, error }: Props) {
 
           {/* GIF — 60% on desktop, full width on mobile */}
           <div className="w-full md:w-3/5 rounded-xl overflow-hidden bg-slate-900 border border-slate-800 aspect-video">
-            <img src="/quietube/demo.gif" alt="QuieTube in use" className="w-full h-full object-cover" />
+            <img src="/demo.gif" alt="QuieTube in use" className="w-full h-full object-cover" />
           </div>
 
           {/* Features — 40% on desktop */}
@@ -139,8 +139,8 @@ export function LandingPage({ onSignIn, gsiReady, error }: Props) {
 
       {/* Footer */}
       <footer className="max-w-5xl mx-auto px-6 pb-10 text-center text-xs text-slate-600 space-x-4">
-        <a href="/quietube/privacy.html" className="hover:text-slate-300 transition-colors">Privacy Policy</a>
-        <a href="/quietube/terms.html" className="hover:text-slate-300 transition-colors">Terms of Service</a>
+        <a href="/privacy.html" className="hover:text-slate-300 transition-colors">Privacy Policy</a>
+        <a href="/terms.html" className="hover:text-slate-300 transition-colors">Terms of Service</a>
         <a
           href="https://github.com/Tombo1001/quietube"
           target="_blank"

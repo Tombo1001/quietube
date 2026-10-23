@@ -98,8 +98,8 @@ export function Dashboard({
       )}
 
       <footer className="max-w-7xl w-full mx-auto px-4 py-6 text-center text-xs text-slate-600 space-x-4">
-        <a href="/quietube/privacy.html" className="hover:text-slate-300 transition-colors">Privacy Policy</a>
-        <a href="/quietube/terms.html" className="hover:text-slate-300 transition-colors">Terms of Service</a>
+        <a href="/privacy.html" className="hover:text-slate-300 transition-colors">Privacy Policy</a>
+        <a href="/terms.html" className="hover:text-slate-300 transition-colors">Terms of Service</a>
         <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer" className="hover:text-slate-300 transition-colors">YouTube Terms</a>
         <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-slate-300 transition-colors">Google Privacy Policy</a>
         <a href="https://security.google.com/settings/security/permissions" target="_blank" rel="noopener noreferrer" className="hover:text-slate-300 transition-colors">Revoke access</a>
